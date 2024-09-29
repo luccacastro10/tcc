@@ -3,6 +3,7 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, r
     load('constanst.mat','C', 'L', 'L1', 'L2', 'L3')   
     
     % Definição dos parâmetros DH (theta, d, a, alpha)
+    % TODO: ENTENDER SE O SINAL DE Ai DEVE SER NEGATIVO MESMO!!!
     l(1) = Link([0, 0, 0, pi/2], 'standard');
     l(2) = Link([0, L1, -L2, 0], 'standard');
     l(3) = Link([0, 0, -L3, 0], 'standard');
@@ -18,6 +19,7 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, r
     leg = SerialLink(l);
     leg.name = "Leg";
     leg.teach
+    J = leg.jacob0(q);
 
     % Transformação homogênea inercial-centro
     TIC = transl(pos) * rpy2tr(rpy);
@@ -32,15 +34,28 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, r
     T0N = leg.fkine(q).T;
 
     % Transformação homogênea de cada link
-    T0_1 = leg.A(1, q).T;
-    T1_2 = leg.A(2, q).T;
-    T2_3 = leg.A(3, q).T;
+    T0_1 = leg.A(1, q).T    
+    T1_2 = leg.A(2, q).T    
+    T2_3 = leg.A(3, q).T    
     
+    hold off;
+    figure;
+    plot_frames_pos(TIC, TC_01, T0_1, T1_2, T2_3);
+    plot_frames_pos(TIC, TC_02, T0_1, T1_2, T2_3);
+    plot_frames_pos(TIC, TC_03, T0_1, T1_2, T2_3);
+    plot_frames_pos(TIC, TC_04, T0_1, T1_2, T2_3);
     
-    plot_frames_pos(TIC, TC_01, T0_1, T1_2, T2_3, false);
-    plot_frames_pos(TIC, TC_02, T0_1, T1_2, T2_3, true);
-    plot_frames_pos(TIC, TC_03, T0_1, T1_2, T2_3, true);
-    plot_frames_pos(TIC, TC_04, T0_1, T1_2, T2_3, true);
+    % Coordenadas dos pontos finais
+    pos_1 = transl(TIC*TC_01)';
+    pos_2 = transl(TIC*TC_02)';
+    pos_3 = transl(TIC*TC_03)';
+    pos_4 = transl(TIC*TC_04)';
+    x = [pos_1(1), pos_3(1), pos_4(1), pos_2(1), pos_1(1)];
+    y = [pos_1(2), pos_3(2), pos_4(2), pos_2(2), pos_1(2)];
+    z = [pos_1(3), pos_3(3), pos_4(3), pos_2(3), pos_1(3)];
+
+    % Plotar a linha conectando os pontos
+    plot3(x, y, z, '-o', 'LineWidth', 2, 'Color', 'b');
 
     % animate_leg_frames(TIC, TC_01, T0_1, T1_2, T2_3)
 
