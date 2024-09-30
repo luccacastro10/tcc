@@ -1,4 +1,4 @@
-function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, rpy, q)
+function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, rpy, q_leg1, q_leg2, q_leg3, q_leg4)
     
     load('constanst.mat','C', 'L', 'L1', 'L2', 'L3')   
     
@@ -19,7 +19,7 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, r
     leg = SerialLink(l);
     leg.name = "Leg";
     leg.teach
-    J = leg.jacob0(q);
+    J = leg.jacob0(q_leg1);
 
     % Transformação homogênea inercial-centro
     TIC = transl(pos) * rpy2tr(rpy);
@@ -31,19 +31,23 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, r
     TC_04 = [0, 0, 1, -C/2; -1, 0, 0, -L/2; 0, 1, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/direita
 
     % Transformação homogênea plataforma-pata (posição final da perna)
-    T0N = leg.fkine(q).T;
+    T0N_leg1 = leg.fkine(q_leg1).T;
+    T0N_leg2 = leg.fkine(q_leg2).T;
+    T0N_leg3 = leg.fkine(q_leg3).T;
+    T0N_leg4 = leg.fkine(q_leg4).T;
 
     % Transformação homogênea de cada link
-    T0_1 = leg.A(1, q).T    
-    T1_2 = leg.A(2, q).T    
-    T2_3 = leg.A(3, q).T    
+    T_links_leg1 = {leg.A(1, q_leg1).T, leg.A(2, q_leg1).T, leg.A(3, q_leg1).T};
+    T_links_leg2 = {leg.A(1, q_leg2).T, leg.A(2, q_leg2).T, leg.A(3, q_leg2).T};
+    T_links_leg3 = {leg.A(1, q_leg3).T, leg.A(2, q_leg3).T, leg.A(3, q_leg3).T};
+    T_links_leg4 = {leg.A(1, q_leg4).T, leg.A(2, q_leg4).T, leg.A(3, q_leg4).T}; 
     
     hold off;
     figure;
-    plot_frames_pos(TIC, TC_01, T0_1, T1_2, T2_3);
-    plot_frames_pos(TIC, TC_02, T0_1, T1_2, T2_3);
-    plot_frames_pos(TIC, TC_03, T0_1, T1_2, T2_3);
-    plot_frames_pos(TIC, TC_04, T0_1, T1_2, T2_3);
+    plot_frames_pos(TIC, TC_01, T_links_leg1{1}, T_links_leg1{2}, T_links_leg1{3});
+    plot_frames_pos(TIC, TC_02, T_links_leg2{1}, T_links_leg2{2}, T_links_leg2{3});
+    plot_frames_pos(TIC, TC_03, T_links_leg3{1}, T_links_leg3{2}, T_links_leg3{3});
+    plot_frames_pos(TIC, TC_04, T_links_leg4{1}, T_links_leg4{2}, T_links_leg4{3});
     
     % Coordenadas dos pontos finais
     pos_1 = transl(TIC*TC_01)';
@@ -57,12 +61,12 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, r
     % Plotar a linha conectando os pontos
     plot3(x, y, z, '-o', 'LineWidth', 2, 'Color', 'b');
 
-    % animate_leg_frames(TIC, TC_01, T0_1, T1_2, T2_3)
+    %animate_leg_frames(TIC, TC_01, T_links_leg1{1}, T_links_leg1{2}, T_links_leg1{3})
 
     % Cálculo da posição final para cada perna
-    pos_leg_1 = h2e((TIC * TC_01 * T0N) * [0; 0; 0; 1]);
-    pos_leg_2 = h2e((TIC * TC_02 * T0N) * [0; 0; 0; 1]);
-    pos_leg_3 = h2e((TIC * TC_03 * T0N) * [0; 0; 0; 1]);
-    pos_leg_4 = h2e((TIC * TC_04 * T0N) * [0; 0; 0; 1]);
+    pos_leg_1 = h2e((TIC * TC_01 * T0N_leg1) * [0; 0; 0; 1]);
+    pos_leg_2 = h2e((TIC * TC_02 * T0N_leg2) * [0; 0; 0; 1]);
+    pos_leg_3 = h2e((TIC * TC_03 * T0N_leg3) * [0; 0; 0; 1]);
+    pos_leg_4 = h2e((TIC * TC_04 * T0N_leg4) * [0; 0; 0; 1]);
     
 end
