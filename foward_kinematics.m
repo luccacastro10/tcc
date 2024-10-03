@@ -1,12 +1,12 @@
-function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, rpy, q_leg1, q_leg2, q_leg3, q_leg4)
+function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(pos, rpy, q_leg1, q_leg2, q_leg3, q_leg4)
     
     load('constanst.mat','C', 'L', 'L1', 'L2', 'L3')   
     
     % Definição dos parâmetros DH (theta, d, a, alpha)
     % TODO: ENTENDER SE O SINAL DE Ai DEVE SER NEGATIVO MESMO!!!
     l(1) = Link([0, 0, 0, pi/2], 'standard');
-    l(2) = Link([0, L1, -L2, 0], 'standard');
-    l(3) = Link([0, 0, -L3, 0], 'standard');
+    l(2) = Link([0, L1, L2, 0], 'standard');
+    l(3) = Link([0, 0, L3, 0], 'standard');
 
     l(1).offset = pi/2;
 
@@ -19,6 +19,7 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, r
     leg = SerialLink(l);
     leg.name = "Leg";
     leg.teach
+    %leg.plot(q_leg1);
     J = leg.jacob0(q_leg1);
 
     % Transformação homogênea inercial-centro
@@ -41,6 +42,16 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = direct_cinematics(pos, r
     T_links_leg2 = {leg.A(1, q_leg2).T, leg.A(2, q_leg2).T, leg.A(3, q_leg2).T};
     T_links_leg3 = {leg.A(1, q_leg3).T, leg.A(2, q_leg3).T, leg.A(3, q_leg3).T};
     T_links_leg4 = {leg.A(1, q_leg4).T, leg.A(2, q_leg4).T, leg.A(3, q_leg4).T}; 
+    
+    display("Transformações homogêneas da Perna")
+    T01 = leg.A(1, q_leg1).T
+    T12 = leg.A(2, q_leg1).T
+    T23 = leg.A(3, q_leg1).T
+    
+    %syms q1, q2, q3;
+    %T03 = trchain( , [q1 q2 q3])
+    %T03 = simplify(T03);
+    %p=T03(1:3,4);
     
     hold off;
     figure;
