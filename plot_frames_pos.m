@@ -1,5 +1,7 @@
 function plot_frames_pos(TIC, TC_0N, T0_1, T1_2, T2_3)
 
+    load('constants.mat','C')
+    
     % Posições dos pontos (origens dos frames)
     points = [transl(TIC)';
               transl(TIC*TC_0N)';
@@ -27,7 +29,7 @@ function plot_frames_pos(TIC, TC_0N, T0_1, T1_2, T2_3)
     axis equal;
 
     % Desenha os sistemas de coordenadas associados a cada ponto
-    axis_length = 1; % Tamanho das setas para os eixos
+    axis_length = 0.1*C; % Tamanho das setas para os eixos
     for i = 1:length(Ts)
         T = Ts{i};
         

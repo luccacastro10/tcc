@@ -1,7 +1,6 @@
 function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = new_foward_kinematics(pos, rpy, q_leg1, q_leg2, q_leg3, q_leg4)
     
-    load('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'left_legs', 'right_legs')   
-    
+    load('constants.mat','C', 'L', 'left_legs', 'right_legs')   
     
     %left_legs.teach
     %right_legs.teach
@@ -19,7 +18,7 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = new_foward_kinematics(po
     TC_04 = [0, 0, 1, -C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/direita
 
     % Transformação homogênea plataforma-pata (posição final da perna)
-    T0N_leg1 = left_legs.fkine(q_leg1).T;
+    T0N_leg1 = left_legs.fkine(q_leg1).T
     T0N_leg2 = left_legs.fkine(q_leg2).T;
     T0N_leg3 = right_legs.fkine(q_leg3).T;
     T0N_leg4 = right_legs.fkine(q_leg4).T;
@@ -31,16 +30,11 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = new_foward_kinematics(po
     T_links_leg4 = {right_legs.A(1, q_leg4).T, right_legs.A(2, q_leg4).T, right_legs.A(3, q_leg4).T}; 
     
     display("Transformações homogêneas da Perna")
-    T01 = left_legs.A(1, q_leg1).T
-    T12 = left_legs.A(2, q_leg1).T
-    T23 = left_legs.A(3, q_leg1).T
+    T01 = left_legs.A(1, q_leg1).T;
+    T12 = left_legs.A(2, q_leg1).T;
+    T23 = left_legs.A(3, q_leg1).T;
     
-    %syms q1, q2, q3;
-    %T03 = trchain( , [q1 q2 q3])
-    %T03 = simplify(T03);
-    %p=T03(1:3,4);
-    
-    hold off;
+    % Plot da cinemática direta do robô
     figure;
     plot_frames_pos(TIC, TC_01, T_links_leg1{1}, T_links_leg1{2}, T_links_leg1{3});
     plot_frames_pos(TIC, TC_02, T_links_leg2{1}, T_links_leg2{2}, T_links_leg2{3});
@@ -58,8 +52,6 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = new_foward_kinematics(po
 
     % Plotar a linha conectando os pontos
     plot3(x, y, z, '-o', 'LineWidth', 2, 'Color', 'b');
-
-    %animate_leg_frames(TIC, TC_01, T_links_leg1{1}, T_links_leg1{2}, T_links_leg1{3})
 
     % Cálculo da posição final para cada perna
     pos_leg_1 = h2e((TIC * TC_01 * T0N_leg1) * [0; 0; 0; 1]);
