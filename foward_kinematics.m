@@ -1,59 +1,27 @@
 function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(pos, rpy, q_leg1, q_leg2, q_leg3, q_leg4)
     
-    load('constanst.mat','C', 'L', 'L1', 'L2', 'L3')   
-    
-    % Definição dos parâmetros DH (theta, d, a, alpha)
-    % TODO: ENTENDER SE O SINAL DE Ai DEVE SER NEGATIVO MESMO!!!
-    l(1) = Link([0, 0, 0, pi/2], 'standard');
-    l(2) = Link([0, L1, L2, 0], 'standard');
-    l(3) = Link([0, 0, L3, 0], 'standard');
-
-    l(1).offset = pi/2;
-
-    % Definição dos limites das juntas
-    l(1).qlim = [-pi/6, pi/6];
-    l(2).qlim = [-2*pi/6, 2*pi/6];
-    l(3).qlim = [-pi, 0];
-
-    % Criação do robô
-    leg = SerialLink(l);
-    leg.name = "Leg";
-    leg.teach
-    %leg.plot(q_leg1);
-    J = leg.jacob0(q_leg1);
+    load('constants.mat', 'left_legs', 'right_legs', 'TC_01', 'TC_02', 'TC_03', 'TC_04')   
 
     % Transformação homogênea inercial-centro
     TIC = transl(pos) * rpy2tr(rpy);
 
-    % Transformações homogêneas do centro para os links iniciais de cada perna
-    TC_01 = [0, 0, 1, +C/2; +1, 0, 0, +L/2; 0, 1, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/esquerda
-    TC_02 = [0, 0, 1, -C/2; +1, 0, 0, +L/2; 0, 1, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/esquerda
-    TC_03 = [0, 0, 1, +C/2; -1, 0, 0, -L/2; 0, 1, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/direita
-    TC_04 = [0, 0, 1, -C/2; -1, 0, 0, -L/2; 0, 1, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/direita
-
     % Transformação homogênea plataforma-pata (posição final da perna)
-    T0N_leg1 = leg.fkine(q_leg1).T;
-    T0N_leg2 = leg.fkine(q_leg2).T;
-    T0N_leg3 = leg.fkine(q_leg3).T;
-    T0N_leg4 = leg.fkine(q_leg4).T;
+    T0N_leg1 = left_legs.fkine(q_leg1).T;
+    T0N_leg2 = left_legs.fkine(q_leg2).T;
+    T0N_leg3 = right_legs.fkine(q_leg3).T;
+    T0N_leg4 = right_legs.fkine(q_leg4).T;
 
     % Transformação homogênea de cada link
-    T_links_leg1 = {leg.A(1, q_leg1).T, leg.A(2, q_leg1).T, leg.A(3, q_leg1).T};
-    T_links_leg2 = {leg.A(1, q_leg2).T, leg.A(2, q_leg2).T, leg.A(3, q_leg2).T};
-    T_links_leg3 = {leg.A(1, q_leg3).T, leg.A(2, q_leg3).T, leg.A(3, q_leg3).T};
-    T_links_leg4 = {leg.A(1, q_leg4).T, leg.A(2, q_leg4).T, leg.A(3, q_leg4).T}; 
+    T_links_leg1 = {left_legs.A(1, q_leg1).T, left_legs.A(2, q_leg1).T, left_legs.A(3, q_leg1).T};
+    T_links_leg2 = {left_legs.A(1, q_leg2).T, left_legs.A(2, q_leg2).T, left_legs.A(3, q_leg2).T};
+    T_links_leg3 = {right_legs.A(1, q_leg3).T, right_legs.A(2, q_leg3).T, right_legs.A(3, q_leg3).T};
+    T_links_leg4 = {right_legs.A(1, q_leg4).T, right_legs.A(2, q_leg4).T, right_legs.A(3, q_leg4).T}; 
     
-    display("Transformações homogêneas da Perna")
-    T01 = leg.A(1, q_leg1).T
-    T12 = leg.A(2, q_leg1).T
-    T23 = leg.A(3, q_leg1).T
+    T01 = left_legs.A(1, q_leg1).T;
+    T12 = left_legs.A(2, q_leg1).T;
+    T23 = left_legs.A(3, q_leg1).T;
     
-    %syms q1, q2, q3;
-    %T03 = trchain( , [q1 q2 q3])
-    %T03 = simplify(T03);
-    %p=T03(1:3,4);
-    
-    hold off;
+    % Plot da cinemática direta do robô
     figure;
     plot_frames_pos(TIC, TC_01, T_links_leg1{1}, T_links_leg1{2}, T_links_leg1{3});
     plot_frames_pos(TIC, TC_02, T_links_leg2{1}, T_links_leg2{2}, T_links_leg2{3});
@@ -71,8 +39,6 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(pos, r
 
     % Plotar a linha conectando os pontos
     plot3(x, y, z, '-o', 'LineWidth', 2, 'Color', 'b');
-
-    %animate_leg_frames(TIC, TC_01, T_links_leg1{1}, T_links_leg1{2}, T_links_leg1{3})
 
     % Cálculo da posição final para cada perna
     pos_leg_1 = h2e((TIC * TC_01 * T0N_leg1) * [0; 0; 0; 1]);

@@ -41,4 +41,10 @@ links(3).qlim = link_3_limits;
 right_legs = SerialLink(links);
 right_legs.name = "right_legs";
 
-save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'left_legs', 'right_legs')
+% Transformações homogêneas do centro para os links iniciais de cada perna
+TC_01 = [0, 0, 1, +C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/esquerda
+TC_02 = [0, 0, 1, -C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/esquerda
+TC_03 = [0, 0, 1, +C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/direita
+TC_04 = [0, 0, 1, -C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/direita
+
+save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'left_legs', 'right_legs', 'TC_01', 'TC_02', 'TC_03', 'TC_04')
