@@ -3,7 +3,7 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(pos, r
     load('constants.mat', 'left_legs', 'right_legs', 'TC_01', 'TC_02', 'TC_03', 'TC_04')   
 
     % Transformação homogênea inercial-centro
-    TIC = transl(pos) * rpy2tr(rpy);
+    TIC = transl(pos) * rpy2tr(rpy');
 
     % Transformação homogênea plataforma-pata (posição final da perna)
     T0N_leg1 = left_legs.fkine(q_leg1).T;

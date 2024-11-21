@@ -12,9 +12,9 @@ function [q_leg1, q_leg2, q_leg3, q_leg4] = inverse_kinematics(pos_leg_1, pos_le
     initial_guess = [0, 0, 0];
 
     % Resolução da cinemática inversa para a perna esquerda usando ikine
-    q_leg1 = left_legs.ikine(transl(T_leg1(1:3,4)), 'q0', initial_guess, 'mask', [1 1 1 0 0 0]);
-    q_leg2 = left_legs.ikine(transl(T_leg2(1:3,4)), 'q0', initial_guess, 'mask', [1 1 1 0 0 0]);
-    q_leg3 = right_legs.ikine(transl(T_leg3(1:3,4)), 'q0', initial_guess, 'mask', [1 1 1 0 0 0]);
-    q_leg4 = right_legs.ikine(transl(T_leg4(1:3,4)), 'q0', initial_guess, 'mask', [1 1 1 0 0 0]);
+    q_leg1 = left_legs.ikine(transl(T_leg1(1:3,4)), 'q0', initial_guess, 'mask', [1 1 1 0 0 0])';
+    q_leg2 = left_legs.ikine(transl(T_leg2(1:3,4)), 'q0', initial_guess, 'mask', [1 1 1 0 0 0])';
+    q_leg3 = right_legs.ikine(transl(T_leg3(1:3,4)), 'q0', initial_guess, 'mask', [1 1 1 0 0 0])';
+    q_leg4 = right_legs.ikine(transl(T_leg4(1:3,4)), 'q0', initial_guess, 'mask', [1 1 1 0 0 0])';
 
 end
