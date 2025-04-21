@@ -1,3 +1,9 @@
+% CONSTANTS.M
+% Define parâmetros geométricos da plataforma e pernas do robô quadrúpede,
+% configura os elos com parâmetros DH e limites articulares,
+% cria objetos SerialLink para as quatro pernas,
+% e define as transformações base de cada perna em relação ao centro do robô.
+% Salva todas as variáveis em 'constants.mat' para uso posterior.
 
 % Parâmetros da plataforma do robô
 C = 80; % Comprimento
@@ -16,35 +22,39 @@ link_2_limits = [-2*pi/6, 2*pi/6];
 link_3_limits = [-pi, 0];
 
 % Pernas da esquerda
-links(1) = Link([0, 0, 0, pi/2], 'standard');
-links(2) = Link([0, L1, -L2, 0], 'standard');
-links(3) = Link([0, 0, -L3, 0], 'standard');
+left_links(1) = Link([0, 0, 0, pi/2], 'standard');
+left_links(2) = Link([0, L1, -L2, 0], 'standard');
+left_links(3) = Link([0, 0, -L3, 0], 'standard');
 
-links(1).offset = pi;
-links(1).qlim = link_1_limits;
-links(2).qlim = link_2_limits;
-links(3).qlim = link_3_limits;
+left_links(1).offset = pi;
+left_links(1).qlim = link_1_limits;
+left_links(2).qlim = link_2_limits;
+left_links(3).qlim = link_3_limits;
 
-left_legs = SerialLink(links);
-left_legs.name = "left_legs";
+leg1 = SerialLink(left_links);
+leg2 = SerialLink(left_links);
+leg1.name = "leg1";
+leg2.name = "leg2";
 
 % Pernas da direita
-links(1) = Link([0, 0, 0, -pi/2], 'standard');
-links(2) = Link([0, L1, -L2, 0], 'standard');
-links(3) = Link([0, 0, -L3, 0], 'standard');
+right_links(1) = Link([0, 0, 0, -pi/2], 'standard');
+right_links(2) = Link([0, L1, -L2, 0], 'standard');
+right_links(3) = Link([0, 0, -L3, 0], 'standard');
 
-links(1).offset = pi;
-links(1).qlim = link_1_limits;
-links(2).qlim = link_2_limits;
-links(3).qlim = link_3_limits;
+right_links(1).offset = pi;
+right_links(1).qlim = link_1_limits;
+right_links(2).qlim = link_2_limits;
+right_links(3).qlim = link_3_limits;
 
-right_legs = SerialLink(links);
-right_legs.name = "right_legs";
+leg3 = SerialLink(right_links);
+leg4 = SerialLink(right_links);
+leg3.name = "leg3";
+leg4.name = "leg4";
 
 % Transformações homogêneas do centro para os links iniciais de cada perna
-TC_01 = [0, 0, 1, +C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/esquerda
-TC_02 = [0, 0, 1, -C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/esquerda
-TC_03 = [0, 0, 1, +C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/direita
-TC_04 = [0, 0, 1, -C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/direita
+leg1.base = [0, 0, 1, +C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/esquerda
+leg2.base = [0, 0, 1, -C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/esquerda
+leg3.base = [0, 0, 1, +C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/direita
+leg4.base = [0, 0, 1, -C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/direita
 
-save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'left_legs', 'right_legs', 'TC_01', 'TC_02', 'TC_03', 'TC_04')
+save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'leg1', 'leg2', 'leg3', 'leg4')

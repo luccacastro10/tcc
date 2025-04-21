@@ -1,16 +1,16 @@
-function plot_frames_pos(TIC, TC_0N, T0_1, T1_2, T2_3)
+function plot_frames_pos(TC_0N, T0_1, T1_2, T2_3)
 
     load('constants.mat','C')
     
     % Posições dos pontos (origens dos frames)
-    points = [transl(TIC)';
-              transl(TIC*TC_0N)';
-              transl(TIC*TC_0N*T0_1)';
-              transl(TIC*TC_0N*T0_1*T1_2)';
-              transl(TIC*TC_0N*T0_1*T1_2*T2_3)'];
+    points = [transl(eye(4))';
+              transl(TC_0N)';
+              transl(TC_0N*T0_1)';
+              transl(TC_0N*T0_1*T1_2)';
+              transl(TC_0N*T0_1*T1_2*T2_3)'];
     
     % Matrizes de transformação correspondentes a cada ponto
-    Ts = {TIC, TIC*TC_0N, TIC*TC_0N*T0_1, TIC*TC_0N*T0_1*T1_2, TIC*TC_0N*T0_1*T1_2*T2_3};
+    Ts = {TC_0N, TC_0N*T0_1, TC_0N*T0_1*T1_2, TC_0N*T0_1*T1_2*T2_3};
 
     if size(points, 2) ~= 3
         error('Os pontos devem ter exatamente três colunas (X, Y, Z).');
