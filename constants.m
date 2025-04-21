@@ -1,3 +1,9 @@
+% CONSTANTS.M
+% Define parâmetros geométricos da plataforma e pernas do robô quadrúpede,
+% configura os elos com parâmetros DH e limites articulares,
+% cria objetos SerialLink para as quatro pernas,
+% e define as transformações base de cada perna em relação ao centro do robô.
+% Salva todas as variáveis em 'constants.mat' para uso posterior.
 
 % Parâmetros da plataforma do robô
 C = 80; % Comprimento
@@ -16,32 +22,32 @@ link_2_limits = [-2*pi/6, 2*pi/6];
 link_3_limits = [-pi, 0];
 
 % Pernas da esquerda
-links(1) = Link([0, 0, 0, pi/2], 'standard');
-links(2) = Link([0, L1, -L2, 0], 'standard');
-links(3) = Link([0, 0, -L3, 0], 'standard');
+left_links(1) = Link([0, 0, 0, pi/2], 'standard');
+left_links(2) = Link([0, L1, -L2, 0], 'standard');
+left_links(3) = Link([0, 0, -L3, 0], 'standard');
 
-links(1).offset = pi;
-links(1).qlim = link_1_limits;
-links(2).qlim = link_2_limits;
-links(3).qlim = link_3_limits;
+left_links(1).offset = pi;
+left_links(1).qlim = link_1_limits;
+left_links(2).qlim = link_2_limits;
+left_links(3).qlim = link_3_limits;
 
-leg1 = SerialLink(links);
-leg2 = SerialLink(links);
+leg1 = SerialLink(left_links);
+leg2 = SerialLink(left_links);
 leg1.name = "leg1";
 leg2.name = "leg2";
 
 % Pernas da direita
-links(1) = Link([0, 0, 0, -pi/2], 'standard');
-links(2) = Link([0, L1, -L2, 0], 'standard');
-links(3) = Link([0, 0, -L3, 0], 'standard');
+right_links(1) = Link([0, 0, 0, -pi/2], 'standard');
+right_links(2) = Link([0, L1, -L2, 0], 'standard');
+right_links(3) = Link([0, 0, -L3, 0], 'standard');
 
-links(1).offset = pi;
-links(1).qlim = link_1_limits;
-links(2).qlim = link_2_limits;
-links(3).qlim = link_3_limits;
+right_links(1).offset = pi;
+right_links(1).qlim = link_1_limits;
+right_links(2).qlim = link_2_limits;
+right_links(3).qlim = link_3_limits;
 
-leg3 = SerialLink(links);
-leg4 = SerialLink(links);
+leg3 = SerialLink(right_links);
+leg4 = SerialLink(right_links);
 leg3.name = "leg3";
 leg4.name = "leg4";
 
