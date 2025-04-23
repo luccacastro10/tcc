@@ -71,4 +71,31 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(q_leg1
     pos_leg_3 = h2e((TCN_leg3) * [0; 0; 0; 1]);
     pos_leg_4 = h2e((TCN_leg4) * [0; 0; 0; 1]);
     
+    % Cálculo do vetor normal ao plano nr_v
+    nr_v = cross(pos_leg_2-pos_leg_3,pos_leg_1-pos_leg_2);
+    nr_v_norm = nr_v/norm(nr_v);
+    
+    % Cálculo de dr
+    dr = dot(nr_v_norm, pos_leg_1);
+    
+    % Cálculo de pr_v
+    pr_v = dr*nr_v_norm;
+
+    % Cálculo de Rr_v
+    z = [0;0;1];
+    zr_v = -nr_v_norm;
+    z_cross_zr_v = cross(z, zr_v);
+    skew_z_cross_zr_v = skew(z_cross_zr_v);
+    Rr_v = eye(3) + skew_z_cross_zr_v + (1/(1+dot(z,zr_v)))*skew_z_cross_zr_v*skew_z_cross_zr_v;
+    
+    % Cálculo de Xr_v (composição de pr_v com Rr_v)
+    Xr_v = [Rr_v, pr_v; [0, 0 , 0], 1];
+    plot_individual_frame(Xr_v);
+end
+
+function S = skew(v)
+    % Gera a matriz antissimétrica (skew-symmetric) de um vetor 3x1
+    S = [   0   -v(3)   v(2);
+          v(3)   0    -v(1);
+         -v(2)  v(1)    0 ];
 end
