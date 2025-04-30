@@ -5,6 +5,12 @@
 % e define as transformações base de cada perna em relação ao centro do robô.
 % Salva todas as variáveis em 'constants.mat' para uso posterior.
 
+contact_stiffness = 1e6; % 1e6
+contact_damping = 1e3; % 1e3
+static_friction = 0.6;
+dynamic_friction = 0.5;
+critical_velocity = 1e-3; % 1e-3
+
 % Parâmetros da plataforma do robô
 C = 80; % Comprimento
 L = 30; % Largura
