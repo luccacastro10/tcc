@@ -5,21 +5,47 @@
 % e define as transformações base de cada perna em relação ao centro do robô.
 % Salva todas as variáveis em 'constants.mat' para uso posterior.
 
-contact_stiffness = 1e6; % 1e6
-contact_damping = 1e3; % 1e3
-static_friction = 0.6;
-dynamic_friction = 0.5;
-critical_velocity = 1e-3; % 1e-3
+%%%%% mechanical model refactoring %%%%%%%%%%%%%
+load('C:\Users\Usuário\Documents\FACULDADE LUCCA\TCC\tcc_git\simulation_from_scratch\jointAngs.mat')
+sinais_perna_1 = jAngsL(:, [1 2 3 4]);
+sinais_perna_2 = jAngsL(:, [1 5 6 7]);
+sinais_perna_3 = jAngsR(:, [1 2 3 4]);
+sinais_perna_4 = jAngsR(:, [1 5 6 7]);
 
-% Parâmetros da plataforma do robô
-C = 80; % Comprimento
-L = 30; % Largura
-H = 3; % Altura
+%joints:
+joint_damping = 0.01;
+joint_initial_q = [+pi/9, +pi/6, -pi/3;
+                   +pi/9, +pi/6, -pi/3;
+                   -pi/9, -pi/6, +pi/3;
+                   -pi/9, -pi/6, +pi/3];
+ps_converter_time_constant = 1e-3;
 
-% Parâmetros das pernas do robô
+%initial_conditions:
+com_initial_height = 0.5; % metros
+
+% world_condition:
+world_damping = 0;      % Translational damping for 6-DOF joint [N/m]
+world_rot_damping = 0;  % Rotational damping for 6-DOF joint [N*m/(rad/s)]
+
+% Parâmetros físicos do robô
+C = 80;  % Comprimento
+L = 30;  % Largura
+H = 3;   % Altura
 L1 = 10; % Comprimento elo 1 da perna
 L2 = 20; % Comprimento elo 2 da perna
 L3 = 20; % Comprimento elo 3 da perna
+density = 1000;
+weight = density*(C*L*H+H*H*(L1+L2+L3)+(4/3)*pi*(H^3))*(1e-6)*9.8;
+
+% Contact and friction parameters:
+contact_stiffness = weight/0.001;        % Approximated at weight (N) / desired displacement (m)
+contact_damping = contact_stiffness/10; % Tuned based on contact stiffness value
+mu_s = 0.9;     % Static friction coefficient: Around that of rubber-asphalt
+mu_k = 0.8;     % Kinetic friction coefficient: Lower than the static coefficient
+mu_vth = 0.1;   % Friction velocity threshold (m/s)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 % ##### Definição dos parâmetros DH (theta, d, a, alpha) #####
 

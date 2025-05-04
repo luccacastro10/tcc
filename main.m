@@ -1,3 +1,4 @@
+clear all, clc
 constants
 step_constants
 
