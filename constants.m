@@ -6,7 +6,7 @@
 % Salva todas as variáveis em 'constants.mat' para uso posterior.
 
 %%%%% mechanical model refactoring %%%%%%%%%%%%%
-load('C:\Users\Usuário\Documents\FACULDADE LUCCA\TCC\tcc_git\simulation_from_scratch\jointAngs.mat')
+load('C:\Users\Usuário\Documents\FACULDADE LUCCA\TCC\tcc_git\refactoring_simulation\jointAngs.mat')
 sinais_perna_1 = jAngsL(:, [1 2 3 4]);
 sinais_perna_2 = jAngsL(:, [1 5 6 7]);
 sinais_perna_3 = jAngsR(:, [1 2 3 4]);
@@ -21,7 +21,7 @@ joint_initial_q = [+pi/9, +pi/6, -pi/3;
 ps_converter_time_constant = 1e-3;
 
 %initial_conditions:
-com_initial_height = 0.5; % metros
+com_initial_height = 0.35; % metros
 
 % world_condition:
 world_damping = 0;      % Translational damping for 6-DOF joint [N/m]

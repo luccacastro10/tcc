@@ -1,4 +1,3 @@
-clear all, clc
 constants
 step_constants
 
@@ -38,6 +37,3 @@ last_yaw = 0;
 last_u_roll = 0;
 last_u_pitch = 0;
 last_u_yaw = 0;
-
-initial_hight = transl(leg1.fkine(simulink_initial_q).T);
-initial_hight_z = abs(initial_hight(3));
