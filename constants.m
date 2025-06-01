@@ -40,9 +40,9 @@ weight = density*(C*L*H+H*H*(L1+L2+L3)+(4/3)*pi*(H^3))*(1e-6)*9.8;
 % Contact and friction parameters:
 contact_stiffness = weight/0.001;        % Approximated at weight (N) / desired displacement (m)
 contact_damping = contact_stiffness/10; % Tuned based on contact stiffness value
-mu_s = 0.9;     % Static friction coefficient: Around that of rubber-asphalt
-mu_k = 0.8;     % Kinetic friction coefficient: Lower than the static coefficient
-mu_vth = 0.1;   % Friction velocity threshold (m/s)
+mu_s = 1.2;     % Static friction coefficient: Around that of rubber-asphalt
+mu_k = 1;     % Kinetic friction coefficient: Lower than the static coefficient
+mu_vth = 0.01;   % Friction velocity threshold (m/s)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -88,5 +88,10 @@ leg1.base = [0, 0, 1, +C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro ->
 leg2.base = [0, 0, 1, -C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/esquerda
 leg3.base = [0, 0, 1, +C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/direita
 leg4.base = [0, 0, 1, -C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/direita
+pc01 = leg1.base.T; pc02 = leg2.base.T; pc03 = leg3.base.T; pc04 = leg4.base.T;
+
+initial_T_leg1 = transl(leg1.fkine(joint_initial_q(1,:)).T);
+% com_initial_height = abs(initial_T_leg1(3))/100 + 0.05; % metros
+com_initial_height = 0.45; % metros
 
 save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'leg1', 'leg2', 'leg3', 'leg4')
