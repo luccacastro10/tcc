@@ -22,7 +22,7 @@ joint_initial_q = [+pi/9, +pi/6, -pi/3;
 ps_converter_time_constant = 1e-3;
 
 %initial_conditions:
-com_initial_height = 0.35; % metros
+com_initial_height = 0.43; % metros
 
 % world_condition:
 world_damping = 0;      % Translational damping for 6-DOF joint [N/m]
@@ -89,19 +89,7 @@ leg1.base = [0, 0, 1, +C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro ->
 leg2.base = [0, 0, 1, -C/2; 0, 1, 0, +L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/esquerda
 leg3.base = [0, 0, 1, +C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna dianteira/direita
 leg4.base = [0, 0, 1, -C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro -> perna traseira/direita
-pc01 = leg1.base.T; pc02 = leg2.base.T; pc03 = leg3.base.T; pc04 = leg4.base.T;
-P0s = [transl(pc01)'; transl(pc02)'; transl(pc03)'; transl(pc04)'];
-
-initial_T_leg1 = transl(leg1.fkine(joint_initial_q(1,:)).T);
-% com_initial_height = abs(initial_T_leg1(3))/100 + 0.05; % metros
-com_initial_height = 0.43; % metros
-
-% Parâmetros para ikine
-q_inital_leg1 = [0, 0, 0];
-q_inital_leg2 = [0, 0, 0];
-q_inital_leg3 = [0, 0, 0];
-q_inital_leg4 = [0, 0, 0];
-
-initial_q = [+pi/9, +pi/6, -pi/3, +pi/9, +pi/6, -pi/3, -pi/9, -pi/6, +pi/3, -pi/9, -pi/6, +pi/3]';
+pc01 = leg1.base.T; pc02 = leg2.base.T; pc03 = leg3.base.T; pc04 = leg4.base.T; % usado no bloco recalculate_legs_position
+P0s = [transl(pc01)'; transl(pc02)'; transl(pc03)'; transl(pc04)']; % usado no bloco inverse_kinematics_analytical
 
 save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'leg1', 'leg2', 'leg3', 'leg4')

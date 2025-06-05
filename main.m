@@ -30,10 +30,3 @@ simulink_initial_q = [0;0;0];
 % 
 % pos_leg_1
 % new_pos_leg_1
-
-last_roll = 0;
-last_pitch = 0;
-last_yaw = 0;
-last_u_roll = 0;
-last_u_pitch = 0;
-last_u_yaw = 0;
