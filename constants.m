@@ -5,24 +5,18 @@
 % e define as transformações base de cada perna em relação ao centro do robô.
 % Salva todas as variáveis em 'constants.mat' para uso posterior.
 
-%%%%% mechanical model refactoring %%%%%%%%%%%%%
-load('C:\Users\Usuário\Documents\FACULDADE LUCCA\TCC\tcc_git\refactoring_simulation\jointAngs.mat')
-sinais_perna_1 = jAngsL(:, [1 2 3 4]);
-sinais_perna_2 = jAngsL(:, [1 5 6 7]);
-sinais_perna_3 = jAngsR(:, [1 2 3 4]);
-sinais_perna_4 = jAngsR(:, [1 5 6 7]);
-
 %joints:
 joint_damping = 0.01;
-joint_initial_q = [+pi/9, +pi/6, -pi/3;
-                   +pi/9, +pi/6, -pi/3;
-                   -pi/9, -pi/6, +pi/3;
-                   -pi/9, -pi/6, +pi/3];
-
 ps_converter_time_constant = 1e-3;
 
 %initial_conditions:
-com_initial_height = 0.43; % metros
+% com_initial_height = 0.43; % metros
+com_initial_height = 0.35; % metros
+q0_leg1 = [+pi/9; +pi/6; -pi/3];
+q0_leg2 = [+pi/9; +pi/6; -pi/3];
+q0_leg3 = [-pi/9; -pi/6; +pi/3];
+q0_leg4 = [-pi/9; -pi/6; +pi/3];
+q0 = [q0_leg1; q0_leg2; q0_leg3; q0_leg4];
 
 % world_condition:
 world_damping = 0;      % Translational damping for 6-DOF joint [N/m]
@@ -93,7 +87,7 @@ pc01 = leg1.base.T; pc02 = leg2.base.T; pc03 = leg3.base.T; pc04 = leg4.base.T; 
 P0s = [transl(pc01)'; transl(pc02)'; transl(pc03)'; transl(pc04)']; % usado no bloco inverse_kinematics_analytical
 
 % pseudoInverse control K
-k = 0.01;
+k = 5;
 Kvec = k*ones(12,1);
 
 save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'leg1', 'leg2', 'leg3', 'leg4')

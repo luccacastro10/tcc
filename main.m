@@ -1,20 +1,11 @@
 constants
-step_constants
 
 %TODO: Angle constraint no modelo simulink
 %TODO: Avaliar como a transformação homogênea TIC será tratada posteriormente
 %TODO: Ler C e L dinamicamente no matlab function block
 
-% Configuração das juntas da perna
-q_leg1 = [+pi/9; +pi/6; -pi/3];
-q_leg2 = [+pi/9; +pi/6; -pi/3];
-q_leg3 = [-pi/9; -pi/6; +pi/3];
-q_leg4 = [-pi/9; -pi/6; +pi/3];
-
-simulink_initial_q = [0;0;0];
-
 % Cálculo da Cinemática Direta das 4 patas do robô
-[pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(q_leg1, q_leg2, q_leg3, q_leg4);
+[pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(q0_leg1, q0_leg2, q0_leg3, q0_leg4);
 
 % Cálculo da Cinemática Inversa das 4 patas do robô
 % [new_q_leg1, new_q_leg2, new_q_leg3, new_q_leg4] = inverse_kinematics(pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4);
