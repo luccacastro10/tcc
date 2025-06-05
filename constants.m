@@ -92,4 +92,8 @@ leg4.base = [0, 0, 1, -C/2; 0, 1, 0, -L/2; -1, 0, 0, 0; 0, 0, 0, 1]; % centro ->
 pc01 = leg1.base.T; pc02 = leg2.base.T; pc03 = leg3.base.T; pc04 = leg4.base.T; % usado no bloco recalculate_legs_position
 P0s = [transl(pc01)'; transl(pc02)'; transl(pc03)'; transl(pc04)']; % usado no bloco inverse_kinematics_analytical
 
+% pseudoInverse control K
+k = 0.01;
+Kvec = k*ones(12,1);
+
 save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'leg1', 'leg2', 'leg3', 'leg4')
