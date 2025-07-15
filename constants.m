@@ -89,7 +89,7 @@ pc01 = leg1.base.T; pc02 = leg2.base.T; pc03 = leg3.base.T; pc04 = leg4.base.T; 
 P0s = [transl(pc01)'; transl(pc02)'; transl(pc03)'; transl(pc04)']; % usado no bloco inverse_kinematics_analytical
 
 % pseudoInverse control K
-k = 100;
+k = 300;
 Kvec = k*ones(12,1);
 
 save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'leg1', 'leg2', 'leg3', 'leg4')
