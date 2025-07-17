@@ -95,10 +95,11 @@ Kvec = k*ones(12,1);
 %%%%%%%%%%%%%%% Gerar trajetórias em formato de elipse para o robô %%%%%%%%%%%%%%%%%%%%
 a = 7; % semi-eixo maior da elipse (em x)
 b = 4; % semi-eixo menor da elipse (em z)
-duracao = 3; % segundos
-duracao_pausa = 1; % segundo
-amostragem = 100; % Hz (pontos por segundo)
-tempo_total = linspace(0, 4*(duracao+duracao_pausa), round(4*(duracao+duracao_pausa) * amostragem))'; % para dar 4 passos
+duracao = 1; % segundos
+duracao_pausa = 0.25; % segundo
+amostragem = 1000; % Hz (pontos por segundo)
+ciclos = 4;
+tempo_total = linspace(0, ciclos*4*(duracao+duracao_pausa), ciclos*round(4*(duracao+duracao_pausa) * amostragem))'; % para dar 4 passos
 
 pos0_leg1 = transl(leg1.fkine(q0_leg1).T);
 pos0_leg2 = transl(leg2.fkine(q0_leg2).T);
@@ -168,8 +169,13 @@ traj_pausa_dot = traj_pausa_dot(1:duracao_pausa*amostragem, :);
 legs_traj = [traj_pausa; traj_leg_1; traj_pausa; traj_leg_4; traj_pausa; traj_leg_3; traj_pausa; traj_leg_2];
 legs_traj_dot = [traj_pausa_dot; traj_leg_1_dot; traj_pausa_dot; traj_leg_4_dot; traj_pausa_dot; traj_leg_3_dot; traj_pausa_dot; traj_leg_2_dot];
 
+legs_traj = [legs_traj; legs_traj; legs_traj; legs_traj];
+legs_traj_dot = [legs_traj_dot; legs_traj_dot; legs_traj_dot; legs_traj_dot];
+
 legs_traj = [tempo_total, legs_traj];
 legs_traj_dot = [tempo_total, legs_traj_dot];
+
+traj_global = generate_legs_traj(pos0_leg1, pos0_leg2, pos0_leg3, pos0_leg4, a, b, duracao, duracao_pausa, amostragem, ciclos);
 
 save('legs_traj.mat', 'legs_traj');
 save('legs_traj_dot.mat', 'legs_traj_dot');
