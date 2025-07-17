@@ -105,10 +105,10 @@ pos0_leg1 = transl(leg1.fkine(q0_leg1).T);
 pos0_leg2 = transl(leg2.fkine(q0_leg2).T);
 pos0_leg3 = transl(leg3.fkine(q0_leg3).T);
 pos0_leg4 = transl(leg4.fkine(q0_leg4).T);
-[traj_1, traj_1_dot] = generate_elipse_traj(pos0_leg1, a, b, duracao, amostragem);
-[traj_2, traj_2_dot] = generate_elipse_traj(pos0_leg2, a, b, duracao, amostragem);
-[traj_3, traj_3_dot] = generate_elipse_traj(pos0_leg3, a, b, duracao, amostragem);
-[traj_4, traj_4_dot] = generate_elipse_traj(pos0_leg4, a, b, duracao, amostragem);
+[traj_1] = generate_elipse_traj(pos0_leg1, a, b, duracao, amostragem);
+[traj_2] = generate_elipse_traj(pos0_leg2, a, b, duracao, amostragem);
+[traj_3] = generate_elipse_traj(pos0_leg3, a, b, duracao, amostragem);
+[traj_4] = generate_elipse_traj(pos0_leg4, a, b, duracao, amostragem);
 
 % % Gerar trajetória e derivada
 % [trajetoria, derivada] = generate_elipse_traj(pos0_leg1, a, b, duracao, amostragem);
@@ -155,29 +155,19 @@ traj_leg_1 = [traj_1, pos0_leg2_mat, pos0_leg3_mat, pos0_leg4_mat];
 traj_leg_2 = [pos0_leg1_mat, traj_2, pos0_leg3_mat, pos0_leg4_mat];
 traj_leg_3 = [pos0_leg1_mat, pos0_leg2_mat, traj_3, pos0_leg4_mat];
 traj_leg_4 = [pos0_leg1_mat, pos0_leg2_mat, pos0_leg3_mat, traj_4];
-traj_leg_1_dot = [traj_1_dot, zero, zero, zero];
-traj_leg_2_dot = [zero, traj_2_dot, zero, zero];
-traj_leg_3_dot = [zero, zero, traj_3_dot, zero];
-traj_leg_4_dot = [zero, zero, zero, traj_4_dot];
 
 traj_pausa = [pos0_leg1_mat, pos0_leg2_mat, pos0_leg3_mat, pos0_leg4_mat];
 traj_pausa = traj_pausa(1:duracao_pausa*amostragem, :);
-traj_pausa_dot = [zero, zero, zero, zero];
-traj_pausa_dot = traj_pausa_dot(1:duracao_pausa*amostragem, :);
 
 % perna 1 -> perna 4 -> perna 3 -> perna 2
 legs_traj = [traj_pausa; traj_leg_1; traj_pausa; traj_leg_4; traj_pausa; traj_leg_3; traj_pausa; traj_leg_2];
-legs_traj_dot = [traj_pausa_dot; traj_leg_1_dot; traj_pausa_dot; traj_leg_4_dot; traj_pausa_dot; traj_leg_3_dot; traj_pausa_dot; traj_leg_2_dot];
 
 legs_traj = [legs_traj; legs_traj; legs_traj; legs_traj];
-legs_traj_dot = [legs_traj_dot; legs_traj_dot; legs_traj_dot; legs_traj_dot];
 
 legs_traj = [tempo_total, legs_traj];
-legs_traj_dot = [tempo_total, legs_traj_dot];
 
 traj_global = generate_legs_traj(pos0_leg1, pos0_leg2, pos0_leg3, pos0_leg4, a, b, duracao, duracao_pausa, amostragem, ciclos);
 
 save('legs_traj.mat', 'legs_traj');
-save('legs_traj_dot.mat', 'legs_traj_dot');
 
 save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'leg1', 'leg2', 'leg3', 'leg4')
