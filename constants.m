@@ -94,9 +94,9 @@ Kvec = k*ones(12,1);
 
 %%%%%%%%%%%%%%% Gerar trajetórias em formato de elipse para o robô %%%%%%%%%%%%%%%%%%%%
 a = 7; % semi-eixo maior da elipse (em x)
-b = 4; % semi-eixo menor da elipse (em z)
+b = 2; % semi-eixo menor da elipse (em z)
 duracao = 1; % segundos
-duracao_pausa = 0.25; % segundo
+duracao_pausa = 0.1; % segundo
 amostragem = 1000; % Hz (pontos por segundo)
 ciclos = 4;
 tempo_total = linspace(0, ciclos*4*(duracao+duracao_pausa), ciclos*round(4*(duracao+duracao_pausa) * amostragem))'; % para dar 4 passos
@@ -105,69 +105,9 @@ pos0_leg1 = transl(leg1.fkine(q0_leg1).T);
 pos0_leg2 = transl(leg2.fkine(q0_leg2).T);
 pos0_leg3 = transl(leg3.fkine(q0_leg3).T);
 pos0_leg4 = transl(leg4.fkine(q0_leg4).T);
-[traj_1] = generate_elipse_traj(pos0_leg1, a, b, duracao, amostragem);
-[traj_2] = generate_elipse_traj(pos0_leg2, a, b, duracao, amostragem);
-[traj_3] = generate_elipse_traj(pos0_leg3, a, b, duracao, amostragem);
-[traj_4] = generate_elipse_traj(pos0_leg4, a, b, duracao, amostragem);
-
-% % Gerar trajetória e derivada
-% [trajetoria, derivada] = generate_elipse_traj(pos0_leg1, a, b, duracao, amostragem);
-% % Separar coordenadas
-% x = trajetoria(:,1);
-% y = trajetoria(:,2); % constante
-% z = trajetoria(:,3);
-% vx = derivada(:,1);
-% vz = derivada(:,3);
-% % Criar figura
-% figure;
-% hold on;
-% axis equal;
-% grid on;
-% xlabel('X');
-% ylabel('Z');
-% title('Animação da trajetória elíptica no plano XZ');
-% xlim([min(x)-0.2, max(x)+0.2]);
-% ylim([min(z)-0.2, max(z)+0.2]);
-% % Plot da trajetória completa (linha de fundo)
-% plot(x, z, '--', 'Color', [0.7 0.7 0.7]);
-% % Objeto para ponto atual
-% traj_point = plot(x(1), z(1), 'ro', 'MarkerSize', 8, 'MarkerFaceColor', 'r');
-% vel_arrow = quiver(x(1), z(1), vx(1), vz(1), 0.2, 'b', 'LineWidth', 1.5); % vetor velocidade
-% 
-% % Animação
-% for k = 1:length(x)
-%     set(traj_point, 'XData', x(k), 'YData', z(k));
-%     set(vel_arrow, 'XData', x(k), 'YData', z(k), ...
-%                    'UData', vx(k), 'VData', vz(k));
-%     pause(1 / amostragem); % controle da velocidade da animação
-% end
-
-pontos_por_perna = duracao * amostragem;
-one = ones(pontos_por_perna, 1);
-zero = zeros(pontos_por_perna, 3);
-pos0_leg1_mat = [pos0_leg1(1)*one, pos0_leg1(2)*one, pos0_leg1(3)*one];
-pos0_leg2_mat = [pos0_leg2(1)*one, pos0_leg2(2)*one, pos0_leg2(3)*one];
-pos0_leg3_mat = [pos0_leg3(1)*one, pos0_leg3(2)*one, pos0_leg3(3)*one];
-pos0_leg4_mat = [pos0_leg4(1)*one, pos0_leg4(2)*one, pos0_leg4(3)*one];
-
-% Concatenar trajetórias de cada perna em uma trajetória global
-traj_leg_1 = [traj_1, pos0_leg2_mat, pos0_leg3_mat, pos0_leg4_mat];
-traj_leg_2 = [pos0_leg1_mat, traj_2, pos0_leg3_mat, pos0_leg4_mat];
-traj_leg_3 = [pos0_leg1_mat, pos0_leg2_mat, traj_3, pos0_leg4_mat];
-traj_leg_4 = [pos0_leg1_mat, pos0_leg2_mat, pos0_leg3_mat, traj_4];
-
-traj_pausa = [pos0_leg1_mat, pos0_leg2_mat, pos0_leg3_mat, pos0_leg4_mat];
-traj_pausa = traj_pausa(1:duracao_pausa*amostragem, :);
-
-% perna 1 -> perna 4 -> perna 3 -> perna 2
-legs_traj = [traj_pausa; traj_leg_1; traj_pausa; traj_leg_4; traj_pausa; traj_leg_3; traj_pausa; traj_leg_2];
-
-legs_traj = [legs_traj; legs_traj; legs_traj; legs_traj];
-
-legs_traj = [tempo_total, legs_traj];
 
 traj_global = generate_legs_traj(pos0_leg1, pos0_leg2, pos0_leg3, pos0_leg4, a, b, duracao, duracao_pausa, amostragem, ciclos);
 
-save('legs_traj.mat', 'legs_traj');
+save('traj_global.mat', 'traj_global');
 
 save('constants.mat','C', 'L', 'L1', 'L2', 'L3', 'leg1', 'leg2', 'leg3', 'leg4')
