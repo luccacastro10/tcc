@@ -11,13 +11,13 @@ ps_converter_time_constant = 1e-3;
 
 %initial_conditions:
 % com_initial_height = 0.43; % metros
-com_initial_height = 0.35; % metros
+com_initial_height = 0.30; % metros
 % com_initial_height = 0.5; % metros
 
-q0_leg1 = [+pi/9; +pi/6; -pi/3];
-q0_leg2 = [+pi/9; +pi/6; -pi/3];
-q0_leg3 = [-pi/9; -pi/6; +pi/3];
-q0_leg4 = [-pi/9; -pi/6; +pi/3];
+q0_leg1 = [+pi/9; +pi/6; -pi/2];
+q0_leg2 = [+pi/9; +pi/6; -pi/2];
+q0_leg3 = [-pi/9; -pi/6; +pi/2];
+q0_leg4 = [-pi/9; -pi/6; +pi/2];
 q0 = [q0_leg1; q0_leg2; q0_leg3; q0_leg4];
 
 % world_condition:
