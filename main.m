@@ -1,3 +1,6 @@
+clear
+close all
+clc
 constants
 
 %TODO: Angle constraint no modelo simulink

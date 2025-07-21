@@ -71,11 +71,21 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(q_leg1
     pos_leg_3 = h2e((TCN_leg3) * [0; 0; 0; 1]);
     pos_leg_4 = h2e((TCN_leg4) * [0; 0; 0; 1]);
     
-    trajetoria_1 = generate_elipse_traj(pos_leg_1, 7, 4, 3, 1000);
+    trajetoria_1 = generate_elipse_traj(pos_leg_1, 10, 6, 3, 1000);
+    trajetoria_2 = generate_elipse_traj(pos_leg_2, 10, 6, 3, 1000, false);
+    trajetoria_3 = generate_elipse_traj(pos_leg_3, 10, 6, 3, 1000, false);
+    trajetoria_4 = generate_elipse_traj(pos_leg_4, 10, 6, 3, 1000);
+
    
     plot3(trajetoria_1(:,1), trajetoria_1(:,2), trajetoria_1(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
     plot3(trajetoria_1(1,1), trajetoria_1(1,2), trajetoria_1(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
-
+    plot3(trajetoria_2(:,1), trajetoria_2(:,2), trajetoria_2(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
+    plot3(trajetoria_2(1,1), trajetoria_2(1,2), trajetoria_2(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+    plot3(trajetoria_3(:,1), trajetoria_3(:,2), trajetoria_3(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
+    plot3(trajetoria_3(1,1), trajetoria_3(1,2), trajetoria_3(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+    plot3(trajetoria_4(:,1), trajetoria_4(:,2), trajetoria_4(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
+    plot3(trajetoria_4(1,1), trajetoria_4(1,2), trajetoria_4(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+    
     % Cálculo do vetor normal ao plano nr_v
     nr_v = cross(pos_leg_2-pos_leg_3,pos_leg_1-pos_leg_2);
     nr_v_norm = nr_v/norm(nr_v);

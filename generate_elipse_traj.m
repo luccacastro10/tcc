@@ -28,28 +28,24 @@ z0 = pos_inicial(3);
 
 if perna_principal
     % === TRAJETÓRIA ELÍPTICA ===
-    theta = linspace(2*pi, 0, num_pontos + 1);
+    theta = linspace(0, pi, (num_pontos)/2 + 1);
     theta(end) = [];
-
-    x = x0 + a * -cos(theta) + a;
+    x = x0 + a * +cos(theta) + a;
     z = z0 + b * sin(theta);
-    y = y0 * ones(1, num_pontos);
+    y = y0 * ones(1, (num_pontos)/2);
 
 else
     % === TRAJETÓRIA LINEAR (VAI E VOLTA) ===
 
     % Metade dos pontos para ida, metade para volta
-    n_ida = floor(num_pontos / 2);
-    n_volta = num_pontos - n_ida;
-
+    n_ida = 3*floor(num_pontos / 2);
+    
     % Movimento linear no eixo X
-    x_ida   = linspace(x0, x0 - 2*a, n_ida);
-    x_volta = linspace(x0 - 2*a, x0, n_volta);
-    x = [x_ida, x_volta];
+    x   = linspace(x0, x0 + 2*a, n_ida);
 
     % Constantes nos outros eixos
-    y = y0 * ones(1, num_pontos);
-    z = z0 * ones(1, num_pontos);
+    y = y0 * ones(1, n_ida);
+    z = z0 * ones(1, n_ida);
 
 end
 

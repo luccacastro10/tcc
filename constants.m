@@ -11,13 +11,13 @@ ps_converter_time_constant = 1e-3;
 
 %initial_conditions:
 % com_initial_height = 0.43; % metros
-com_initial_height = 0.30; % metros
+com_initial_height = 0.3; % metros
 % com_initial_height = 0.5; % metros
 
-q0_leg1 = [+pi/9; +pi/6; -pi/2];
-q0_leg2 = [+pi/9; +pi/6; -pi/2];
-q0_leg3 = [-pi/9; -pi/6; +pi/2];
-q0_leg4 = [-pi/9; -pi/6; +pi/2];
+q0_leg1 = [+pi/8; +pi/3; -pi/2];
+q0_leg2 = [+pi/8; +pi/3; -pi/2];
+q0_leg3 = [-pi/8; -pi/3; +pi/2];
+q0_leg4 = [-pi/8; -pi/3; +pi/2];
 q0 = [q0_leg1; q0_leg2; q0_leg3; q0_leg4];
 
 % world_condition:
@@ -37,9 +37,9 @@ weight = density*(C*L*H+H*H*(L1+L2+L3)+(4/3)*pi*(H^3))*(1e-6)*9.8;
 % Contact and friction parameters:
 contact_stiffness = weight/0.001;        % Approximated at weight (N) / desired displacement (m)
 contact_damping = contact_stiffness/10; % Tuned based on contact stiffness value
-mu_s = 1.2;     % Static friction coefficient: Around that of rubber-asphalt
-mu_k = 1;     % Kinetic friction coefficient: Lower than the static coefficient
-mu_vth = 0.01;   % Friction velocity threshold (m/s)
+mu_s = 1.6;     % Static friction coefficient: Around that of rubber-asphalt
+mu_k = 1.5;     % Kinetic friction coefficient: Lower than the static coefficient
+mu_vth = 0.03;   % Friction velocity threshold (m/s)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -93,12 +93,12 @@ k = 300;
 Kvec = k*ones(12,1);
 
 %%%%%%%%%%%%%%% Gerar trajetórias em formato de elipse para o robô %%%%%%%%%%%%%%%%%%%%
-a = 7; % semi-eixo maior da elipse (em x)
-b = 2; % semi-eixo menor da elipse (em z)
+a = 10; % semi-eixo maior da elipse (em x)
+b = 4; % semi-eixo menor da elipse (em z)
 duracao = 1; % segundos
-duracao_pausa = 0.1; % segundo
+duracao_pausa = 1; % segundo
 amostragem = 1000; % Hz (pontos por segundo)
-ciclos = 4;
+ciclos = 10;
 tempo_total = linspace(0, ciclos*4*(duracao+duracao_pausa), ciclos*round(4*(duracao+duracao_pausa) * amostragem))'; % para dar 4 passos
 
 pos0_leg1 = transl(leg1.fkine(q0_leg1).T);
