@@ -11,13 +11,13 @@ ps_converter_time_constant = 1e-3;
 
 %initial_conditions:
 % com_initial_height = 0.43; % metros
-com_initial_height = 0.3; % metros
+com_initial_height = 0.47; % metros
 % com_initial_height = 0.5; % metros
 
-q0_leg1 = [+pi/8; +pi/3; -pi/2];
-q0_leg2 = [+pi/8; +pi/3; -pi/2];
-q0_leg3 = [-pi/8; -pi/3; +pi/2];
-q0_leg4 = [-pi/8; -pi/3; +pi/2];
+q0_leg1 = [0; +pi/4; -pi/2];
+q0_leg2 = [0; +pi/4; -pi/2];
+q0_leg3 = [0; -pi/4; +pi/2];
+q0_leg4 = [0; -pi/4; +pi/2];
 q0 = [q0_leg1; q0_leg2; q0_leg3; q0_leg4];
 
 % world_condition:
@@ -28,9 +28,9 @@ world_rot_damping = 0;  % Rotational damping for 6-DOF joint [N*m/(rad/s)]
 C = 80;  % Comprimento
 L = 30;  % Largura
 H = 3;   % Altura
-L1 = 10; % Comprimento elo 1 da perna
-L2 = 20; % Comprimento elo 2 da perna
-L3 = 20; % Comprimento elo 3 da perna
+L1 = 15; % Comprimento elo 1 da perna
+L2 = 30; % Comprimento elo 2 da perna
+L3 = 30; % Comprimento elo 3 da perna
 density = 1000;
 weight = density*(C*L*H+H*H*(L1+L2+L3)+(4/3)*pi*(H^3))*(1e-6)*9.8;
 
@@ -89,7 +89,7 @@ pc01 = leg1.base.T; pc02 = leg2.base.T; pc03 = leg3.base.T; pc04 = leg4.base.T; 
 P0s = [transl(pc01)'; transl(pc02)'; transl(pc03)'; transl(pc04)']; % usado no bloco inverse_kinematics_analytical
 
 % pseudoInverse control K
-k = 300;
+k = 600;
 Kvec = k*ones(12,1);
 
 %%%%%%%%%%%%%%% Gerar trajetórias em formato de elipse para o robô %%%%%%%%%%%%%%%%%%%%

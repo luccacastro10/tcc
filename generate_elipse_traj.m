@@ -41,7 +41,7 @@ else
     n_ida = 3*floor(num_pontos / 2);
     
     % Movimento linear no eixo X
-    x   = linspace(x0, x0 + 2*a, n_ida);
+    x   = linspace(x0-2*a, x0, n_ida);
 
     % Constantes nos outros eixos
     y = y0 * ones(1, n_ida);
