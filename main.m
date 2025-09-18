@@ -17,6 +17,8 @@ constants
 % Validação da Cinemática Inversa
 [new_pos_leg_1, new_pos_leg_2, new_pos_leg_3, new_pos_leg_4] = foward_kinematics(new_q_leg1, new_q_leg2, new_q_leg3, new_q_leg4);
 
+pos_cte = [pos_leg_1; pos_leg_2; pos_leg_3; pos_leg_4];
+
 % Validação da Cinemática Direta com base nos cálculos manuais
 % pos_leg_1;
 % leg1.jacob0(q_leg1);

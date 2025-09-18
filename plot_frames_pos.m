@@ -23,7 +23,7 @@ function plot_frames_pos(TC_0N, T0_1, T1_2, T2_3)
     xlabel('X');
     ylabel('Y');
     zlabel('Z');
-    title('Pontos no Espaço 3D');
+    title('Modelo Cinemático do Robô Quadrúpede');
     axis equal;
 
     % Desenha os sistemas de coordenadas associados a cada ponto

@@ -14,6 +14,9 @@ ps_converter_time_constant = 1e-3;
 com_initial_height = 0.47; % metros
 % com_initial_height = 0.5; % metros
 
+load_max_value = 10; % deg
+load_max_value_rad = deg2rad(load_max_value);
+
 q0_leg1 = [0; +pi/4; -pi/2];
 q0_leg2 = [0; +pi/4; -pi/2];
 q0_leg3 = [0; -pi/4; +pi/2];
@@ -89,7 +92,7 @@ pc01 = leg1.base.T; pc02 = leg2.base.T; pc03 = leg3.base.T; pc04 = leg4.base.T; 
 P0s = [transl(pc01)'; transl(pc02)'; transl(pc03)'; transl(pc04)']; % usado no bloco inverse_kinematics_analytical
 
 % pseudoInverse control K
-k = 600;
+k = 10;
 Kvec = k*ones(12,1);
 
 %%%%%%%%%%%%%%% Gerar trajetórias em formato de elipse para o robô %%%%%%%%%%%%%%%%%%%%
