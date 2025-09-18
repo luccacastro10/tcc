@@ -14,7 +14,7 @@ ps_converter_time_constant = 1e-3;
 com_initial_height = 0.47; % metros
 % com_initial_height = 0.5; % metros
 
-load_max_value = 10; % deg
+load_max_value = 5; % deg
 load_max_value_rad = deg2rad(load_max_value);
 
 q0_leg1 = [0; +pi/4; -pi/2];
