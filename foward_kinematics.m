@@ -77,18 +77,37 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(q_leg1
     trajetoria_4 = generate_elipse_traj(pos_leg_4, 10, 6, 3, 1000);
 
    
-    plot3(trajetoria_1(:,1), trajetoria_1(:,2), trajetoria_1(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
-    plot3(trajetoria_1(1,1), trajetoria_1(1,2), trajetoria_1(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
-    plot3(trajetoria_2(:,1), trajetoria_2(:,2), trajetoria_2(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
-    plot3(trajetoria_2(1,1), trajetoria_2(1,2), trajetoria_2(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
-    plot3(trajetoria_3(:,1), trajetoria_3(:,2), trajetoria_3(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
-    plot3(trajetoria_3(1,1), trajetoria_3(1,2), trajetoria_3(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
-    plot3(trajetoria_4(:,1), trajetoria_4(:,2), trajetoria_4(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
-    plot3(trajetoria_4(1,1), trajetoria_4(1,2), trajetoria_4(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
-    
+%     plot3(trajetoria_1(:,1), trajetoria_1(:,2), trajetoria_1(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
+%     plot3(trajetoria_1(1,1), trajetoria_1(1,2), trajetoria_1(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+%     plot3(trajetoria_2(:,1), trajetoria_2(:,2), trajetoria_2(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
+%     plot3(trajetoria_2(1,1), trajetoria_2(1,2), trajetoria_2(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+%     plot3(trajetoria_3(:,1), trajetoria_3(:,2), trajetoria_3(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
+%     plot3(trajetoria_3(1,1), trajetoria_3(1,2), trajetoria_3(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+%     plot3(trajetoria_4(:,1), trajetoria_4(:,2), trajetoria_4(:,3), '-o', 'LineWidth', 2, 'Color', 'b');
+%     plot3(trajetoria_4(1,1), trajetoria_4(1,2), trajetoria_4(1,3), 'rx', 'MarkerSize', 10, 'LineWidth', 2);
+%     
     % Cálculo do vetor normal ao plano nr_v
-    nr_v = cross(pos_leg_2-pos_leg_3,pos_leg_1-pos_leg_2);
+    nr_v = cross(pos_leg_1-pos_leg_3,pos_leg_2-pos_leg_1);
     nr_v_norm = nr_v/norm(nr_v);
+    
+    
+    % Plotar vetores das pernas (a partir da origem) com linha preta tracejada
+    quiver3(0,0,0, pos_leg_1(1)*1.1, pos_leg_1(2)*1.1, pos_leg_1(3)*1.1, 'k--', 'LineWidth', 2)
+    quiver3(0,0,0, pos_leg_2(1)*1.1, pos_leg_2(2)*1.1, pos_leg_2(3)*1.1, 'k--', 'LineWidth', 2)
+    quiver3(0,0,0, pos_leg_3(1)*1.1, pos_leg_3(2)*1.1, pos_leg_3(3)*1.1, 'k--', 'LineWidth', 2)
+
+    a = pos_leg_1 - pos_leg_3;   % Primeiro vetor
+    b = pos_leg_2 - pos_leg_1;   % Segundo vetor
+
+    % Plotar vetor a (vermelho tracejado)
+    quiver3(0,0,0, a(1)*1.1, a(2)*1.1, a(3)*1.1, 'r', 'LineWidth', 2)
+
+    % Plotar vetor b (azul tracejado)
+    quiver3(0,0,0, b(1)*1.1, b(2)*1.1, b(3)*1.1, 'g', 'LineWidth', 2)
+
+    % Plotar vetor normal (também da origem, mas pode ser do centroide se quiser)
+    quiver3(0,0,0, 20*nr_v_norm(1), 20*nr_v_norm(2), 20*nr_v_norm(3), 'k', 'LineWidth', 2)
+    
     
     % Cálculo de dr
     dr = dot(nr_v_norm, pos_leg_1);
@@ -98,7 +117,7 @@ function [pos_leg_1, pos_leg_2, pos_leg_3, pos_leg_4] = foward_kinematics(q_leg1
 
     % Cálculo de Rr_v
     z = [0;0;1];
-    zr_v = -nr_v_norm;
+    zr_v = nr_v_norm;
     z_cross_zr_v = cross(z, zr_v);
     skew_z_cross_zr_v = skew(z_cross_zr_v);
     Rr_v = eye(3) + skew_z_cross_zr_v + (1/(1+dot(z,zr_v)))*skew_z_cross_zr_v*skew_z_cross_zr_v;

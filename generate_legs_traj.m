@@ -52,17 +52,17 @@ volta4_leg3 = volta4_leg3(1: terco,:);
 volta4_leg4 = volta4_leg4(1: terco,:);
 
 
-traj_1 = [incentro1_leg1, incentro1_leg2, incentro1_leg3, incentro1_leg4, 1*ones(size(ida1_leg1(:,1)))];
-traj_2 = [ida1_leg1,  volta1_leg2,  volta1_leg3, volta1_leg4, 4*ones(size(ida1_leg1(:,1)))];
+traj_1 = [incentro1_leg1, incentro1_leg2, incentro1_leg3, incentro1_leg4, 0*ones(size(ida1_leg1(:,1)))];
+traj_2 = [ida1_leg1,  volta1_leg2,  volta1_leg3, volta1_leg4, 1*ones(size(ida1_leg1(:,1)))];
 traj_2 = appendLastRow(traj_2, 100);
-traj_3 = [incentro2_leg1, incentro2_leg2, incentro2_leg3, incentro2_leg4, 1*ones(size(ida1_leg1(:,1)))];
+traj_3 = [incentro2_leg1, incentro2_leg2, incentro2_leg3, incentro2_leg4, 0*ones(size(ida1_leg1(:,1)))];
 traj_4 = [volta2_leg1,  volta2_leg2,  volta2_leg3, ida2_leg4, 4*ones(size(ida1_leg1(:,1)))];
 traj_4 = appendLastRow(traj_4, 100);
-traj_5 = [incentro3_leg1, incentro3_leg2, incentro3_leg3, incentro3_leg4, 1*ones(size(ida1_leg1(:,1)))];
-traj_6 = [volta3_leg1,  volta3_leg2,  ida3_leg3, volta3_leg4, 4*ones(size(ida1_leg1(:,1)))];
+traj_5 = [incentro3_leg1, incentro3_leg2, incentro3_leg3, incentro3_leg4, 0*ones(size(ida1_leg1(:,1)))];
+traj_6 = [volta3_leg1,  volta3_leg2,  ida3_leg3, volta3_leg4, 3*ones(size(ida1_leg1(:,1)))];
 traj_6 = appendLastRow(traj_6, 100);
-traj_7 = [incentro4_leg1, incentro4_leg2, incentro4_leg3, incentro4_leg4, 1*ones(size(ida1_leg1(:,1)))];
-traj_8 = [volta4_leg1,  ida4_leg2,  volta4_leg3, volta4_leg4, 4*ones(size(ida1_leg1(:,1)))];
+traj_7 = [incentro4_leg1, incentro4_leg2, incentro4_leg3, incentro4_leg4, 0*ones(size(ida1_leg1(:,1)))];
+traj_8 = [volta4_leg1,  ida4_leg2,  volta4_leg3, volta4_leg4, 2*ones(size(ida1_leg1(:,1)))];
 
 p0 = traj_8(end, :);
 % Ponto final: posições atuais das pernas empilhadas
@@ -70,7 +70,7 @@ pf = [p_leg1', p_leg2', p_leg3', p_leg4', 0]';
 
 % Interpolação linear
 traj_9 = zeros(500, length(p0));
-for i = 1:length(p0)
+for i = 1:length(p0)-1
     traj_9(:,i) = linspace(p0(i), pf(i), 500)';
 end
 
@@ -89,7 +89,7 @@ trajetoria_global_ciclos = [tempo, trajetoria_global_ciclos];
 
 % check_com_stability_visual(trajetoria_global_ciclos);
 
-trajetoria_global_ciclos = trajetoria_global_ciclos(:, 1:13); % remove coluna identificadora de pernas levantando
+% trajetoria_global_ciclos = trajetoria_global_ciclos(:, 1:13); % remove coluna identificadora de pernas levantando
 
 end
 

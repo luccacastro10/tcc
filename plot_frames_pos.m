@@ -27,6 +27,7 @@ function plot_frames_pos(TC_0N, T0_1, T1_2, T2_3)
     axis equal;
 
     % Desenha os sistemas de coordenadas associados a cada ponto
+    % Comentar esse for se nao quiser os frames plotados no modelo completo do robo
     for i = 1:length(Ts)
         plot_individual_frame(Ts{i});
     end
